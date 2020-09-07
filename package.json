@@ -1,12 +1,12 @@
 {
-  "name": "arras",
+  "name": "aaaa",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
     "start": "node server"
   },
   "dependencies": {
-    "google-closure-library": "20180506.0.0",
+    "google-closure-library": "^20200830.0.0",
     "ws": "6.1.x"
   },
   "engines": {
