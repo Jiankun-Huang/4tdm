@@ -4575,18 +4575,53 @@ var maintainloop = (() => {
                 },
             };
         })();
-        return census => {
-            if (timer > 6000 && ran.dice(16000 - timer)) {
+       return census => {
+            if (timer > 3000 && ran.dice(3000 - timer)) {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
                 let choice = [];
-                switch (ran.chooseChance(40, 1)) {
-                    case 0: 
-                        choice = [[Class.elite_destroyer], 2, 'a', 'nest'];
+                switch (ran.chooseChance(1, 1, 1, 1, 1, 1, 1, 1, 1, 1,)) {
+                     case 0: 
+                        choice = [[Class.elite_destroyer, Class.elite_sniper, Class.extra_sprayer], 1, 'castle', 'norm'];
+                        sockets.broadcast('A boss are coming...');
                         break;
                     case 1: 
-                        choice = [[Class.palisade], 1, 'castle', 'norm']; 
+                        choice = [[Class.falbuster, Class.bossskimmer], 1, 'castle', 'norm']; 
+                        sockets.broadcast('A Fallen boss are coming...');
+                        break;
+                     case 2: 
+                        choice = [[Class.skimboss], 1, 'castle', 'norm']; 
                         sockets.broadcast('A strange trembling...');
+                        break;
+                    case 3: 
+                        choice = [[Class.elite_gunner, Class.palisade], 1, 'castle', 'norm'];
+                        sockets.broadcast('A boss are coming...');
+                        break;
+                    case 4: 
+                        choice = [[Class.elite_trapper], 1, 'castle', 'norm'];
+                     sockets.broadcast('Traps ARE OP...');
+                        break;
+                    case 5: 
+                        choice = [[Class.summoner, Class.summonermk2,], 1, 'castle', 'norm']; 
+                        sockets.broadcast('Never has the phrase "Square Up" been more acurate...');
+                        break;
+                     case 6: 
+                        choice = [[Class.skimboss, Class.summoner, Class.summonermk2, Class.palisade, Class.rindeeyr_kswyvmexqcxx], 1, 'castle', 'norm']; 
+                        sockets.broadcast('Some bosses are on their ways...');
+                        break;
+                    case 7: 
+                        choice = [[Class.sassafras], 1, 'a', 'norm']; 
+                        sockets.broadcast('All hail LORD SASSAFRAS!!!');
+                        sockets.broadcast('PS. I like crackers...')
+                    sockets.broadcast('I Really Like Em ')
+                        break;
+                     case 8: 
+                         choice = [[Class.elite_f, Class.skimboss, Class.elite_sprayer, Class.elite_defender, Class.elite_gunner, Class.pal, Class.elite_trapper, Class.elite_sprayerer,  Class.elite_fofa,  Class.PK3, Class.TK1org, Class.sz2miniboss, Class.sz1, Class.sz2, Class.ek1, Class.ek2, Class.ek3,  Class.eexx1,  Class.square_boss,  Class.awp53, Class.iceee, Class.awpega, Class.awpegamk2, Class.elite_guardian, Class.god_guardian, Class.awpswarm1, Class.molot, Class.awpcus1, Class.constructors], 1, 'castle', 'norm']; 
+                     sockets.broadcast('P.S love bosses!');
+                        break;
+                    case 1: 
+                        choice = [[Class.visultima, Class.aquamarine, Class.grush, Class.dradnought, Class.trapefighter, Class.neut, Class.ravenguard, Class.crashship], 1, 'a', 'nest']; 
+                        sockets.broadcast('Nest Guardian are coming...');
                         break;
                 }
                 boss.prepareToSpawn(...choice);
@@ -4596,10 +4631,10 @@ var maintainloop = (() => {
         };
     })();
     let spawnCrasher = census => {
-        if (ran.chance(1 -  0.5 * census.crasher / room.maxFood / room.nestFoodAmount)) {
+        if (ran.chance(1 -  0.5 * census.crasher / room.nestFoodAmount)) {
             let spot, i = 30;
             do { spot = room.randomType('nest'); i--; if (!i) return 0; } while (dirtyCheck(spot, 100));
-            let type = (ran.dice(80)) ? ran.choose([Class.sentryGun, Class.sentrySwarm, Class.sentryTrap]) : Class.crasher;
+            let type = (ran.dice(80)) ? ran.choose([Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.grushsentry, Class.sentrytrapere, Class.sentrydefender]) : Class.crasher;
             let o = new Entity(spot);
                 o.define(type);
                 o.team = -100;
@@ -4608,7 +4643,7 @@ var maintainloop = (() => {
     // The NPC function
     let makenpcs = (() => {
         // Make base protectors if needed.
-            /*let f = (loc, team) => { 
+            let f = (loc, team) => { 
                 let o = new Entity(loc);
                     o.define(Class.baseProtector);
                     o.team = -team;
@@ -4616,7 +4651,7 @@ var maintainloop = (() => {
             };
             for (let i=1; i<5; i++) {
                 room['bas' + i].forEach((loc) => { f(loc, i); }); 
-            }*/
+            }
         // Return the spawning function
         let bots = [];
         return () => {
@@ -4634,27 +4669,29 @@ var maintainloop = (() => {
             // Spawning
             spawnCrasher(census);
             spawnBosses(census);
-            /*/ Bots
+          bots
                 if (bots.length < c.BOTS) {
                     let o = new Entity(room.random());
-                    o.color = 17;
+                    o.color = 4;
                     o.define(Class.bot);
-                    o.define(Class.basic);
+                    let arrayOfClasses = [Class.booster1, Class.mistwin, Class.autoswargunner, Class.congunner, Class.single, Class.managers, Class.double, Class.gunner, Class.buildergun, Class.auto5, Class.bosssniper, Class.bentbuilder, Class.twinhyb, Class.autosmap, Class.twinbuilder, Class.battleship1, Class.dualgunner, Class.xhunter, Class.auto9, Class.autostream]//put as many classes as you want made by oblivion plain;
+                     let newClass = arrayOfClasses[Math.floor(Math.random() * arrayOfClasses.length)];
+                    o.define(newClass);
                     o.name += ran.chooseBotName();
                     o.refreshBodyAttributes();
-                    o.color = 17;
+                    o.color = 1;
                     bots.push(o);
                 }
                 // Remove dead ones
                 bots = bots.filter(e => { return !e.isDead(); });
                 // Slowly upgrade them
                 bots.forEach(o => {
-                    if (o.skill.level < 45) {
-                        o.skill.score += 35;
+                    if (o.skill.level < 60) {
+                        o.skill.score += 1000;
                         o.skill.maintain();
                     }
                 });
-            */
+            
         };
     })();
     // The big food function
